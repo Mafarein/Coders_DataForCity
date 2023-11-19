@@ -3,5 +3,3 @@
 # python bytecode
 */__pycache__/
 *.pyc
-# database (for now)
-*/db.sqlite3
