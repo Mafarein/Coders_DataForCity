@@ -31,7 +31,7 @@ class TimeSlot(models.Model):
     
     class Meta:
         constraints = [
-            models.constraints.CheckConstraint(check=models.Q(start__leq = models.F("end")), name="timeslot_start_leq_end")
+            models.constraints.CheckConstraint(check=models.Q(start__lte = models.F("end")), name="timeslot_start_leq_end")
         ]
 
 
@@ -49,5 +49,5 @@ class Reservation(models.Model):
 
     class Meta:
         constraints = [
-            models.constraints.CheckConstraint(check=models.Q(start__leq = models.F("end")), name="reservation_start_leq_end")
+            models.constraints.CheckConstraint(check=models.Q(start__lte = models.F("end")), name="reservation_start_leq_end")
         ]
