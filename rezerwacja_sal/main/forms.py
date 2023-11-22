@@ -1,7 +1,7 @@
 from django import forms
 from .models import SportFacility
 
-class SportFacilityCreationForm(forms.ModelForm):
+class SportFacilityForm(forms.ModelForm):
     class Meta:
         model = SportFacility
-        fields = ("type", "street_name","building_number")
+        fields = ("name", "type", "street_name","building_number")

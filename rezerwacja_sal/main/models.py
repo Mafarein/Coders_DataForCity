@@ -10,13 +10,15 @@ class SportFacilityType(models.Model):
 
 class SportFacility(models.Model):
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE) ## user
+    # opcjonalna, służy rozróżnieniu obiektów tego samego typu
+    name = models.CharField("nazwa", max_length=50, null=True)
     # jeden obiekt może mieć kilka zastosowań, np. boisko może mieć kosze do koszykówki
     # oraz bramki do piłki ręcznej
     type = models.ManyToManyField(SportFacilityType)
     latitude = models.IntegerField()  # user fields ??
     longitude = models.IntegerField()
-    street_name = models.CharField(max_length=100)
-    building_number = models.PositiveIntegerField()
+    street_name = models.CharField("nazwa ulicy", max_length=100)
+    building_number = models.PositiveIntegerField("numer budynku")
     # is_active - czy obiekt został zatwierdzony przez administrację?
     is_active = models.BooleanField(default=False)
 
