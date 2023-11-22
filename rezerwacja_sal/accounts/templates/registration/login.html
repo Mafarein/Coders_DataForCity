@@ -3,15 +3,14 @@
 {% block content %}
 
     {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
+        <p>Niepoprawna nazwa użytkownika lub hasło. Proszę spróbować.</p>
     {% endif %}
 
     {% if next %}
         {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
-            please login with an account that has access.</p>
+            <p>Nie masz dostępu do tej strony.</p>
         {% else %}
-            <p>Please login to see this page.</p>
+            <p>Aby wyświetlić tę stronę należy się zalogować.</p>
         {% endif %}
     {% endif %}
 
@@ -31,6 +30,7 @@
         <input type="hidden" name="next" value="{{ next }}">
     </form>
 
-    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+    <p><a href="{% url 'password_reset' %}">Nie pamiętam hasła.</a></p>
+    <p><a href="{% url "registration_choice" %}">Utwórz konto</a></p>
 
 {% endblock %}

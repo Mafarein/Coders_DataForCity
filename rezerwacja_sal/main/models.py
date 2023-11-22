@@ -17,6 +17,8 @@ class SportFacility(models.Model):
     longitude = models.IntegerField()
     street_name = models.CharField(max_length=100)
     building_number = models.PositiveIntegerField()
+    # is_active - czy obiekt został zatwierdzony przez administrację?
+    is_active = models.BooleanField(default=False)
 
 
 class TimeSlot(models.Model):
