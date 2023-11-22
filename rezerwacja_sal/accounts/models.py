@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class SchoolProfile(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(verbose_name="Nazwa szkoły", max_length=50)
     lat = models.FloatField(name="latitude")
     long = models.FloatField(name="longitude")
