@@ -24,9 +24,9 @@ class CustomUserCreationForm(UserCreationForm):
 class RegularUserCreationForm(CustomUserCreationForm):
     def save(self, commit=True):
         user = super(RegularUserCreationForm, self).save(commit=False)
-        user.groups.add(Group.objects.get(name="RegularUsers"))
         if commit:
             user.save()
+            user.groups.add(Group.objects.get(name="RegularUsers"))
         return user
     
 # konta wynajmujących: utworzenie konta nie będzie zatwierdzane przez administratora,
@@ -42,9 +42,9 @@ class SportFacilityOwnerCreationForm(CustomUserCreationForm):
 
     def save(self, commit=True):
         user = super(SportFacilityOwnerCreationForm, self).save(commit=False)
-        user.groups.add(Group.objects.get(name="SportFacilityOwners"))
         if commit:
             user.save()
+            user.groups.add(Group.objects.get(name="SportFacilityOwners"))
         return user
 
 
@@ -62,10 +62,10 @@ class SchoolUserCreationForm(UserCreationForm):
     def save(self, commit=True):
         user = super(SchoolUserCreationForm, self).save(commit=False)
         user.username = self.cleaned_data['school_name'].replace(" ", "_")
-        user.groups.add(Group.objects.get(name="Schools"))
         # TODO: utworzyć instancję SchoolProfile na podstawie danych z API
         if commit:
             user.save()
+            user.groups.add(Group.objects.get(name="Schools"))
         return user
     
     def is_valid(self) -> bool:

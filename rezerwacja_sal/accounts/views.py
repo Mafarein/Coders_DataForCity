@@ -23,9 +23,9 @@ def account_creation_form(request, form_class):
                 'token':account_activation_token.make_token(user),  
                 })
             to_email = form.cleaned_data.get('email')
-            email = EmailMessage("Link aktywacyjny konta", msg, to=to_email)
+            email = EmailMessage("Link aktywacyjny konta", msg, to=[to_email])
             email.send()
-            return render("accounts/registration_token_sent.html")
+            return render(request, "accounts/registration_token_sent.html")
     else:
         form = form_class()
     return render(request, "accounts/register.html", {"register_form": form})
