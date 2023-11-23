@@ -9,7 +9,7 @@ class SportFacilityType(models.Model):
 
 
 class SportFacility(models.Model):
-    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE) ## user
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="facilities") ## user
     # opcjonalna, służy rozróżnieniu obiektów tego samego typu
     name = models.CharField("nazwa", max_length=50, null=True)
     # jeden obiekt może mieć kilka zastosowań, np. boisko może mieć kosze do koszykówki
@@ -27,7 +27,7 @@ class TimeSlot(models.Model):
     date = models.DateField(auto_now=False, auto_now_add=False)
     start = models.TimeField()
     end = models.TimeField()
-    facility = models.ForeignKey(SportFacility, on_delete=models.CASCADE)
+    facility = models.ForeignKey(SportFacility, on_delete=models.CASCADE, related_name="timeslots")
     
     class Meta:
         constraints = [
@@ -36,8 +36,8 @@ class TimeSlot(models.Model):
 
 
 class Reservation(models.Model):
-    renting_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE) # wypożyczający
-    facility = models.ForeignKey(SportFacility, on_delete=models.CASCADE)
+    renting_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="reservations") # wypożyczający
+    facility = models.ForeignKey(SportFacility, on_delete=models.CASCADE, related_name="reservations")
     date = models.DateField(auto_now=False, auto_now_add=False)
     start = models.TimeField()
     end = models.TimeField()

@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<p>Obiekty sportowe użytkownika {{owner}}:</p>
+<table>
+    <tr><th>Nazwa</th><th>Typ</th><th>Adres</th></tr>
+    {% for fac in facilities %}
+    <tr>
+        <td>{{fac.name}}</td>
+        <td>{{fac.type}}</td>
+        <td>{{fac.street_name}} {{fac.building_number}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
