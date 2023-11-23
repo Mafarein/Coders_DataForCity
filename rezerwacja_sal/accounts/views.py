@@ -5,6 +5,8 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
 from .forms import *
 from .tokens import account_activation_token
 
@@ -58,3 +60,8 @@ def activate(request, uidb64, token):
 
 def registration_choice(request):
     return render(request, "accounts/registration_choice.html")
+
+
+@login_required
+def profile(request):
+    return render(request, "accounts/profile.html", {"user": get_user(request)})
