@@ -1,6 +1,7 @@
 from plotly.offline import plot
 import plotly.express as px
 import plotly.graph_objects as go
+import requests
 
 
 def make_plotly_map(df):
@@ -15,4 +16,9 @@ def make_plotly_map(df):
 
 
 def get_lat_long_from_address(street_name, building_number):
-    pass
+    geocoding_url = "https://geocode.maps.co/search"
+    r = requests.get(geocoding_url, params={"q": " ".join([str(building_number), street_name, "Warszawa", "PL"])})
+    if not r.ok:
+        return None, None
+    jresponse = r.json()
+    return jresponse[0]['lat'], jresponse[0]['lon']
