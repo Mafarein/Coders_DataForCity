@@ -1,10 +1,12 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user, get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 import pandas as pd
 from .models import SportFacility, TimeSlot
 from .utils import make_plotly_map
+from .forms import *
 
 
 @login_required
@@ -12,7 +14,8 @@ def index(request):
     user = get_user(request)
     if user.groups.filter(name="RegularUsers").exists():
         return redirect("search")
-    # TODO: redirect do odpowiedniego widoku w zależności od grupy
+    else:
+        return redirect("user_facilities", user.pk)
 
 
 # wyszukiwarka
@@ -43,6 +46,16 @@ def get_facilities(request, uid):
 def facility_detail(request, fid):
     facility = get_object_or_404(SportFacility, pk=fid)
     if not facility.is_active:
-        raise Http404
+        raise Http404()
     timeslots = TimeSlot.objects.filter(facility_id=facility)
-    return render(request, "facility_detail.html", {"facility": facility, "timeslots": timeslots})
+    return render(request, "main/facility_detail.html", {"facility": facility, "timeslots": timeslots})
+
+
+def create_facility(request):
+    user = get_user()
+    if user.groups.filter(Q(name="SportFacilityOwners") | Q(name="Schools")).exists():
+        if request.method == "GET":
+            form = SportFacilityForm()
+            return render(request, "main/create_facility.html", {"form": form})
+    else:
+        raise HttpResponseForbidden()

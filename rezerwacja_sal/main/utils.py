@@ -12,3 +12,7 @@ def make_plotly_map(df):
     fig.update_traces(marker={"size":10, "color":"blue"})
     fig.update_mapboxes(center=go.layout.mapbox.Center(lat=52.2,lon=21))
     return plot(fig, output_type="div", include_plotlyjs=False)
+
+
+def get_lat_long_from_address(street_name, building_number):
+    pass
