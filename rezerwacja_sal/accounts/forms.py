@@ -5,17 +5,14 @@ from django.contrib.auth.models import Group
 
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    username = forms.CharField(max_length=50, required=True, label="Nazwa użytkownika")
+    email = forms.EmailField(required=True, label="Email")
+    password1 = forms.CharField(max_length=50, min_length=8, required=True, widget=forms.PasswordInput, label="Hasło")
+    password2 = forms.CharField(max_length=50, min_length=8, required=True, widget=forms.PasswordInput, label="Powtórz hasło")
 
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
-        labels = {
-            "username": "nazwa użytkownika",
-            "email": "email",
-            "password1": "hasło",
-            "password2": "powtórz hasło"
-        }
     
     def save(self, commit=False):
         user = super(CustomUserCreationForm, self).save(commit=False)
@@ -24,7 +21,7 @@ class CustomUserCreationForm(UserCreationForm):
         return user
 
 
-class RegularUserCreationForm(CustomUserCreationForm):    
+class RegularUserCreationForm(CustomUserCreationForm):
     def save(self, commit=True):
         user = super(RegularUserCreationForm, self).save(commit=False)
         user.groups.add(Group.objects.get(name="RegularUsers"))
@@ -36,6 +33,13 @@ class RegularUserCreationForm(CustomUserCreationForm):
 # ale dodanie konkretnego obiektu, którego istnienie można sprawdzić już tak
 
 class SportFacilityOwnerCreationForm(CustomUserCreationForm):
+    name = forms.CharField(max_length=50, required=False, label="Imię")
+    surname = forms.CharField(max_length=50, required=False, label="Nazwisko")
+    
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2", "name", "surname")
+
     def save(self, commit=True):
         user = super(SportFacilityOwnerCreationForm, self).save(commit=False)
         user.groups.add(Group.objects.get(name="SportFacilityOwners"))
@@ -47,14 +51,13 @@ class SportFacilityOwnerCreationForm(CustomUserCreationForm):
 class SchoolUserCreationForm(UserCreationForm):
     # tutaj username to nazwa szkoły
     school_name = forms.CharField(max_length=50, required=True, label="Nazwa szkoły")
+    email = forms.EmailField(required=True, label="Email")
+    password1 = forms.CharField(max_length=50, min_length=8, required=True, widget=forms.PasswordInput, label="Hasło")
+    password2 = forms.CharField(max_length=50, min_length=8, required=True, widget=forms.PasswordInput, label="Powtórz hasło")
 
     class Meta:
         model = User
         fields = ("email", "password1", "password2")
-        labels = {
-            "password1": "hasło",
-            "password2": "powtórz hasło"
-        }
     
     def save(self, commit=True):
         user = super(SchoolUserCreationForm, self).save(commit=False)
