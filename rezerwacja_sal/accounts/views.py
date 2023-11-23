@@ -55,5 +55,6 @@ def activate(request, uidb64, token):
         return render(request, "accounts/registration_complete.html")
     return render(request, "accounts/invalid_token.html")
 
+
 def registration_choice(request):
     return render(request, "accounts/registration_choice.html")

@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth import get_user, get_user_model
 from django.contrib.auth.decorators import login_required
-from plotly.offline import plot
-import plotly.express as px
-import plotly.graph_objects as go
 import pandas as pd
 from .models import SportFacility
+from .utils import make_plotly_map
 
 @login_required
 def index(request):
@@ -15,7 +13,8 @@ def index(request):
     # TODO: redirect do odpowiedniego widoku w zależności od grupy
 
 
-def make_plotly_map():
+# wyszukiwarka
+def search_facilities(request):
     facilities = SportFacility.objects.filter(is_active = True)
     f_data = [
         {
@@ -28,18 +27,7 @@ def make_plotly_map():
     ]
     # podajemy nazwy kolumn na wypadek, gdyby zbiór danych był pusty
     df = pd.DataFrame(f_data, columns=["lat", "long", "name", "owner", "type"])
-    fig = px.scatter_mapbox(df, lat="lat", lon="long", hover_data=["owner", "name", "type"])
-    fig.update_layout(mapbox_style="open-street-map")
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    fig.update_layout(mapbox_bounds={"west": 52, "east": 52.4, "south": 20.8, "north": 21.2})
-    fig.update_traces(marker={"size":10, "color":"blue"})
-    fig.update_mapboxes(center=go.layout.mapbox.Center(lat=52.2,lon=21))
-    return plot(fig, output_type="div", include_plotlyjs=False)
-
-
-# wyszukiwarka
-def search_facilities(request):
-    return render(request, "main/search.html", {"plot": make_plotly_map()})
+    return render(request, "main/search.html", {"plot": make_plotly_map(df)})
 
 
 # wszystkie obiekty sportowe danego użytkownika
