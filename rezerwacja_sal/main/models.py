@@ -7,6 +7,9 @@ class SportFacilityType(models.Model):
     # w razie potrzeby oraz aby umożliwić relację M:M z obiektem sportowym
     type = models.CharField(max_length=50)
 
+    def __str__(self) -> str:
+        return self.type
+
 
 class SportFacility(models.Model):
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="facilities") ## user
@@ -21,6 +24,9 @@ class SportFacility(models.Model):
     building_number = models.PositiveIntegerField("numer budynku")
     # is_active - czy obiekt został zatwierdzony przez administrację?
     is_active = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return str(self.owner) +" "+ self.name
 
 
 class TimeSlot(models.Model):

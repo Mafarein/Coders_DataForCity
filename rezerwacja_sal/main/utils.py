@@ -21,4 +21,4 @@ def get_lat_long_from_address(street_name, building_number):
     if not r.ok:
         return None, None
     jresponse = r.json()
-    return jresponse[0]['lat'], jresponse[0]['lon']
+    return float(jresponse[0]['lat']), float(jresponse[0]['lon'])

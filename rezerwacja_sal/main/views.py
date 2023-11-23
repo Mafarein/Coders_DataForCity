@@ -27,7 +27,7 @@ def search_facilities(request):
             "long": f.longitude,
             "name": f.name,
             "owner": f.owner.get_username(),
-            "type": f.type
+            "type": [t.type for t in f.type.iterator()]
         } for f in facilities
     ]
     # podajemy nazwy kolumn na wypadek, gdyby zbiór danych był pusty
@@ -52,10 +52,15 @@ def facility_detail(request, fid):
 
 
 def create_facility(request):
-    user = get_user()
+    user = get_user(request)
     if user.groups.filter(Q(name="SportFacilityOwners") | Q(name="Schools")).exists():
-        if request.method == "GET":
+        if request.method == "POST":
+            form = SportFacilityForm(request.POST)
+            facility = form.save(user)
+            # TODO: powiadom admina o próbie utworzenia obiektu
+            return render(request, "main/facility_created.html")
+        else:
             form = SportFacilityForm()
             return render(request, "main/create_facility.html", {"form": form})
     else:
-        raise HttpResponseForbidden()
+        return HttpResponseForbidden()
