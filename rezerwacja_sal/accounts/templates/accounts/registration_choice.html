@@ -1,0 +1,7 @@
+{% extends "base_accounts.html" %}
+
+{% block page-content %}
+<a href="{% url 'reg_acc_create' %}">Jako osoba zainteresowana wynajmem</a><br>
+<a href="{% url 'own_acc_create' %}">Jaka właściciel obiektu</a><br>
+<a href="{% url 'school_acc_create' %}">Dla szkół</a>
+{% endblock %}

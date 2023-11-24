@@ -3,3 +3,6 @@
 # python bytecode
 */__pycache__/
 *.pyc
+
+.vscode/
+app-messages/
