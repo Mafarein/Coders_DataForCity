@@ -42,6 +42,23 @@ def get_facilities(request, uid):
     return render(request, "main/user_facilities.html", {"owner": owner, "facilities": facilities})
 
 
+def make_reservation(request, user, facility, timeslots):
+    if request.method == "POST":
+        reservation_form = ReservationForm(request.POST)
+        if reservation_form.is_valid(facility):
+            reservation_form.save(user, facility)
+            return render(request, "main/reservation_made.html")
+    else:
+        reservation_form = ReservationForm()
+        context = {"facility": facility, "timeslots": timeslots, "reservation_form": reservation_form}
+        return render(request, "main/make_reservation.html", context)
+    
+
+def facility_edit(request, facility, timeslots):
+    timeslot_form = TimeSlotForm()
+    return render(request, "main/facility_edit.html", {"facility": facility, "timeslots": timeslots, "timeslot_form": timeslot_form})
+
+
 def facility_detail(request, fid):
     facility = get_object_or_404(SportFacility, pk=fid)
     if not facility.is_active:
@@ -49,15 +66,9 @@ def facility_detail(request, fid):
     timeslots = TimeSlot.objects.filter(facility_id=facility)
     user = get_user(request)
     if is_regular_user(user):
-        if request.method == "POST":
-            reservation_form = ReservationForm(request.POST)
-            if reservation_form.is_valid(facility):
-                reservation_form.save(user, facility)
-                return render(request, "main/reservation_made.html")
-        else:
-            reservation_form = ReservationForm()
-            context = {"facility": facility, "timeslots": timeslots, "reservation_form": reservation_form}
-            return render(request, "main/make_reservation.html", context)
+        return make_reservation(request, user, facility, timeslots)
+    if facility.owner == user:
+        return facility_edit(request, facility, timeslots)
     return render(request, "main/facility_detail.html", {"facility": facility, "timeslots": timeslots})
 
 

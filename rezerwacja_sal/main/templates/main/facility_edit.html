@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>{{facility.name}}</h1>
+<h2>Aktualne przedziały czasowe</h2>
+<table>
+    <tr><th>Data</th><th>Początek</th><th>Koniec</th></tr>
+    {% for slot in timeslots %}
+    <tr><td>{{slot.date}}</td><td>{{slot.start}}</td><td>{{slot.end}}</td></tr>
+    {% endfor %}
+</table>
+<h2>Utwórz nowy przedział czasowy</h2>
+<form action="" method="POST">
+    {% csrf_token %}
+    <table>
+        {{timeslot_form.as_table}}
+        <tr><td colspan='2'><input type="submit" value="Utwórz"></td></tr>
+    </table>
+</form>
+{% endblock %}

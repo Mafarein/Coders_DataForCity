@@ -45,8 +45,8 @@ class DateInput(forms.DateInput):
 
 class ReservationForm(forms.ModelForm):
     date = forms.DateField(widget=DateInput, required=True)
-    start = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
-    duration = forms.DurationField(widget=forms.Select(choices=HOUR_CHOICES), label="Czas trwania")
+    start = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), required=True)
+    duration = forms.DurationField(widget=forms.Select(choices=HOUR_CHOICES), label="Czas trwania", required=True)
     field_order = ["date", "start", "duration", "motivation"]
 
     class Meta:
@@ -95,3 +95,13 @@ class ReservationForm(forms.ModelForm):
             accepted=True
         ).exists()
         return v and ts and not clashing
+
+
+class TimeSlotForm(forms.ModelForm):
+    date = forms.DateField(widget=DateInput, label="Data", required=True)
+    start = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), label="Początek", required=True)
+    end = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), label="Koniec", required=True)
+
+    class Meta:
+        model = TimeSlot
+        fields = ("date", "start", "end")
