@@ -1,16 +1,16 @@
-{% extends "base_generic.html" %}
+{% extends "base_accounts.html" %}
 
-{% block content %}
+{% block page-content %}
 
     {% if form.errors %}
-        <p>Niepoprawna nazwa użytkownika lub hasło. Proszę spróbować.</p>
+        <p class="p1">Niepoprawna nazwa użytkownika lub hasło. Proszę spróbować.</p>
     {% endif %}
 
     {% if next %}
         {% if user.is_authenticated %}
-            <p>Nie masz dostępu do tej strony.</p>
+            <p class="p1">Nie masz dostępu do tej strony.</p>
         {% else %}
-            <p>Aby wyświetlić tę stronę należy się zalogować.</p>
+            <p class="p1">Aby wyświetlić tę stronę należy się zalogować.</p>
         {% endif %}
     {% endif %}
 
@@ -18,15 +18,15 @@
         {% csrf_token %}
         <table>
         <tr>
-            <td>{{ form.username.label_tag }}</td>
+            <td>Nazwa użytkownika</td>
             <td>{{ form.username }}</td>
         </tr>
         <tr>
-            <td>{{ form.password.label_tag }}</td>
+            <td>Hasło</td>
             <td>{{ form.password }}</td>
         </tr>
         </table>
-        <input type="submit" value="login">
+        <input type="submit" value="Zaloguj się">
         <input type="hidden" name="next" value="{{ next }}">
     </form>
 
