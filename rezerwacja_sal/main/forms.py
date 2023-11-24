@@ -1,7 +1,8 @@
 from typing import Any
 from django import forms
-from .models import SportFacility
+from .models import SportFacility, Reservation
 from .utils import get_lat_long_from_address
+import datetime as dt
 
 
 class SportFacilityForm(forms.ModelForm):
@@ -28,3 +29,31 @@ class SportFacilityForm(forms.ModelForm):
         if commit:
             fac.save()
         return fac
+
+
+HOUR_CHOICES = [(dt.time(hour=h, minute=m), f'{h:02d}:{m:02d}') for h in range(0, 24) for m in (0, 30)]
+
+
+class DateInput(forms.DateInput):
+    input_type = "date"
+
+    def __init__(self, **kwargs):
+        kwargs["format"] = "%Y-%m-%d"
+        super().__init__(**kwargs)
+
+
+class ReservationForm(forms.ModelForm):
+    date = forms.DateField(widget=DateInput, required=True)
+    start = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
+    duration = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), label="Czas trwania")
+    field_order = ["date", "start", "duration", "motivation"]
+
+    class Meta:
+        model = Reservation
+        fields = ("date", "start", "motivation")
+        labels = {
+            "date": "Data",
+            "start": "Rozpoczęcie",
+            "motivation": "Motywacja",
+        }
+        help_texts = {"motivation": "Opcjonalne szczegóły dotyczące celu, w jakim chcesz zarezerwować obiekt."}

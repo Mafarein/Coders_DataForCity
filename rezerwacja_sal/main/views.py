@@ -5,14 +5,14 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 import pandas as pd
 from .models import SportFacility, TimeSlot
-from .utils import make_plotly_map
+from .utils import make_plotly_map, is_regular_user
 from .forms import *
 
 
 @login_required
 def index(request):
     user = get_user(request)
-    if user.groups.filter(name="RegularUsers").exists():
+    if is_regular_user(user):
         return redirect("search")
     else:
         return redirect("user_facilities", user.pk)
@@ -42,12 +42,15 @@ def get_facilities(request, uid):
     return render(request, "main/user_facilities.html", {"owner": owner, "facilities": facilities})
 
 
-# widok dla jednego obiektu - rezerwacja (RegularUsers) lub edycja (SportFacilityOwners)
 def facility_detail(request, fid):
     facility = get_object_or_404(SportFacility, pk=fid)
     if not facility.is_active:
         raise Http404()
     timeslots = TimeSlot.objects.filter(facility_id=facility)
+    if is_regular_user(get_user(request)):
+        reservation_form = ReservationForm()
+        context = {"facility": facility, "timeslots": timeslots, "reservation_form": reservation_form}
+        return render(request, "main/make_reservation.html", context)
     return render(request, "main/facility_detail.html", {"facility": facility, "timeslots": timeslots})
 
 

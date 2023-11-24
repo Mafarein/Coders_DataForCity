@@ -22,3 +22,6 @@ def get_lat_long_from_address(street_name, building_number):
         return None, None
     jresponse = r.json()
     return float(jresponse[0]['lat']), float(jresponse[0]['lon'])
+
+def is_regular_user(user):
+    return user.groups.filter(name="RegularUsers").exists()
