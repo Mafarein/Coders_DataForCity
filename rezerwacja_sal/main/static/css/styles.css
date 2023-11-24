@@ -3,17 +3,29 @@ body{
     margin-top: 2%;
 }
 
+.top-login{
+    display: flex;
+    text-align: center;
+    border-bottom: 3px solid rgb(189, 107, 42);
+}
+
 header{
     color: rgb(64, 68, 68);
-    text-align: center;
     font-family: 'Didot' serif;
-    font-size: 40px;
-    
+    font-size: 30px;
     margin-bottom: 20px;
 }
-.top-login{
-    border-bottom: 3px solid rgb(183, 78, 36);
+
+img.logo{
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 50px;
+    width: 65px;
+    margin-top: -8px;
+    margin-right: 50px;
+    height: auto;
 }
+
 
 .login-center{
     margin-top: 20px;
@@ -33,4 +45,35 @@ form {
     color: rgb(64, 68, 68);
     font-family: 'Didot' serif;
     font-size: 23px;
+}
+
+
+input[type="submit"]{
+    text-align: center;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: white;
+    color: rgb(64, 68, 68);
+    border: 2px solid rgb(64, 68, 68);
+}
+
+input[type="submit"]:hover {
+    background-color: rgb(64, 68, 68); 
+    color: white;
+  }
+
+button {
+    text-align: center;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: white;
+    color: rgb(64, 68, 68);
+    border: 2px solid rgb(64, 68, 68);
+  }
+
+button:hover {
+    background-color: rgb(64, 68, 68); 
+    color: white;    
 }
