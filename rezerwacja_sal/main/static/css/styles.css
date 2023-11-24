@@ -1,0 +1,36 @@
+body{
+    background-color:white;
+    margin-top: 2%;
+}
+
+header{
+    color: rgb(64, 68, 68);
+    text-align: center;
+    font-family: 'Didot' serif;
+    font-size: 40px;
+    
+    margin-bottom: 20px;
+}
+.top-login{
+    border-bottom: 3px solid rgb(183, 78, 36);
+}
+
+.login-center{
+    margin-top: 20px;
+    text-align: center;
+    border: 2px solid rgb(112, 119, 119);
+    margin-left: 32%;
+    margin-right: 32%;
+    padding: 10px;
+}
+
+form {
+    display: inline-block;
+}
+
+.login-center .p1{
+    margin-top: -5px;
+    color: rgb(64, 68, 68);
+    font-family: 'Didot' serif;
+    font-size: 23px;
+}

@@ -1,0 +1,11 @@
+{% extends "base_accounts.html" %}
+
+{% block page-content %}
+<form method="POST">
+    {% csrf_token %}
+    <table>
+    {{ register_form.as_table }}    
+    </table>                
+    <button class="btn btn-primary" type="submit">Zarejestruj</button>
+</form>
+{% endblock %}
