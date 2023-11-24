@@ -47,10 +47,17 @@ def facility_detail(request, fid):
     if not facility.is_active:
         raise Http404()
     timeslots = TimeSlot.objects.filter(facility_id=facility)
-    if is_regular_user(get_user(request)):
-        reservation_form = ReservationForm()
-        context = {"facility": facility, "timeslots": timeslots, "reservation_form": reservation_form}
-        return render(request, "main/make_reservation.html", context)
+    user = get_user(request)
+    if is_regular_user(user):
+        if request.method == "POST":
+            reservation_form = ReservationForm(request.POST)
+            if reservation_form.is_valid(facility):
+                reservation_form.save(user, facility)
+                return render(request, "main/reservation_made.html")
+        else:
+            reservation_form = ReservationForm()
+            context = {"facility": facility, "timeslots": timeslots, "reservation_form": reservation_form}
+            return render(request, "main/make_reservation.html", context)
     return render(request, "main/facility_detail.html", {"facility": facility, "timeslots": timeslots})
 
 
@@ -59,7 +66,8 @@ def create_facility(request):
     if user.groups.filter(Q(name="SportFacilityOwners") | Q(name="Schools")).exists():
         if request.method == "POST":
             form = SportFacilityForm(request.POST)
-            facility = form.save(user)
+            if form.is_valid():
+                facility = form.save(user)
             # TODO: powiadom admina o próbie utworzenia obiektu
             return render(request, "main/facility_created.html")
         else:

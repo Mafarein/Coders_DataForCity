@@ -1,6 +1,7 @@
 from typing import Any
 from django import forms
-from .models import SportFacility, Reservation
+from django.db.models import Q
+from .models import SportFacility, Reservation, TimeSlot
 from .utils import get_lat_long_from_address
 import datetime as dt
 
@@ -45,7 +46,7 @@ class DateInput(forms.DateInput):
 class ReservationForm(forms.ModelForm):
     date = forms.DateField(widget=DateInput, required=True)
     start = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
-    duration = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), label="Czas trwania")
+    duration = forms.DurationField(widget=forms.Select(choices=HOUR_CHOICES), label="Czas trwania")
     field_order = ["date", "start", "duration", "motivation"]
 
     class Meta:
@@ -57,3 +58,40 @@ class ReservationForm(forms.ModelForm):
             "motivation": "Motywacja",
         }
         help_texts = {"motivation": "Opcjonalne szczegóły dotyczące celu, w jakim chcesz zarezerwować obiekt."}
+
+    def get_end_time(self):
+        start_dt = dt.datetime.combine(self.cleaned_data['date'], self.cleaned_data['start'])
+        end_dt = start_dt + self.cleaned_data['duration']
+        if end_dt.date() == start_dt.date():
+            return end_dt.time()
+        return None
+
+    def save(self, user, facility, commit=True):
+        reservation = super().save(False)
+        reservation.end = self.get_end_time()
+        reservation.renting_user = user
+        reservation.facility = facility
+        reservation.accepted = False
+        if commit:
+            reservation.save()
+
+    def is_valid(self, facility) -> bool:
+        v = super().is_valid()
+        # 1. timeslot exists
+        end = self.get_end_time()
+        if end is None:
+            return False
+        ts = TimeSlot.objects.filter(
+            date=self.cleaned_data['date'],
+            facility=facility,
+            start__lte=self.cleaned_data['start'],
+            end__gte=end
+            ).exists()
+        # 2. clashing reservations
+        clashing = Reservation.objects.filter(
+            (Q(start__lt=end) & Q(start__gte=self.cleaned_data['start'])) | (Q(end__gt=self.cleaned_data['start']) & Q(end__lte=end)),
+            date=self.cleaned_data['date'],
+            facility=facility,
+            accepted=True
+        ).exists()
+        return v and ts and not clashing
