@@ -74,6 +74,7 @@ class ReservationForm(forms.ModelForm):
         reservation.accepted = False
         if commit:
             reservation.save()
+        return reservation
 
     def is_valid(self, facility) -> bool:
         v = super().is_valid()
@@ -105,3 +106,13 @@ class TimeSlotForm(forms.ModelForm):
     class Meta:
         model = TimeSlot
         fields = ("date", "start", "end")
+
+    def is_valid(self) -> bool:
+        return super().is_valid() and self.cleaned_data['start'] < self.cleaned_data['end']
+    
+    def save(self, facility, commit=True):
+        ts = super().save(commit=False)
+        ts.facility = facility
+        if commit:
+            ts.save()
+        return ts

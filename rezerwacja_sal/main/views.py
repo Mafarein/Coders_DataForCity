@@ -55,6 +55,10 @@ def make_reservation(request, user, facility, timeslots):
     
 
 def facility_edit(request, facility, timeslots):
+    if request.method == "POST":
+        timeslot_form = TimeSlotForm(request.POST)
+        if timeslot_form.is_valid():
+            timeslot_form.save(facility)
     timeslot_form = TimeSlotForm()
     return render(request, "main/facility_edit.html", {"facility": facility, "timeslots": timeslots, "timeslot_form": timeslot_form})
 
