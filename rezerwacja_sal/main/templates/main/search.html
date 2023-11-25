@@ -6,6 +6,14 @@
 
 {% block content %}
 {% autoescape off %}
+<div id="search">
+    <form action="" method="get">
+        <table>
+            {{search_form.as_table}}
+            <tr><td colspan='2'><input type="submit" value="Szukaj"></td></tr>
+        </table>
+    </form>
+</div>
 {{ plot }}
 {% endautoescape %}
 {% endblock content %}
