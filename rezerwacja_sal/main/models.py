@@ -18,8 +18,8 @@ class SportFacility(models.Model):
     # jeden obiekt może mieć kilka zastosowań, np. boisko może mieć kosze do koszykówki
     # oraz bramki do piłki ręcznej
     type = models.ManyToManyField(SportFacilityType)
-    latitude = models.IntegerField()  # user fields ??
-    longitude = models.IntegerField()
+    latitude = models.FloatField()  # user fields ??
+    longitude = models.FloatField()
     street_name = models.CharField("nazwa ulicy", max_length=100)
     building_number = models.PositiveIntegerField("numer budynku")
     # is_active - czy obiekt został zatwierdzony przez administrację?

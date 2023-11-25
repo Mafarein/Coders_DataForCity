@@ -21,7 +21,31 @@ def get_lat_long_from_address(street_name, building_number):
     if not r.ok:
         return None, None
     jresponse = r.json()
-    return float(jresponse[0]['lat']), float(jresponse[0]['lon'])
+    if jresponse:
+        return float(jresponse[0]['lat']), float(jresponse[0]['lon'])
+    else:
+        return None, None
+
+
+def school_address(school_name):
+    school_name = school_name.upper()
+    url = "https://api.um.warszawa.pl/api/action/datastore_search?"
+    q = {"resource_id":"1cae4865-bb17-4944-a222-0d0cdc377951", "filters":'{"Nazwa placówki": "'+school_name+'"}'}
+    response = requests.get(url, q)
+    if response.status_code != 200:
+        return None
+    data = response.json()        
+    records = data['result']['records']
+    if len(records) != 1:
+        return None
+    school = records[0]
+    return {
+        'school_name' : school_name,
+        'street' : school.get('Ulica', None),
+        'building_number' : school.get('Nr domu', None),
+        'postal_code' : school.get('Kod pocztowy', None)
+    }
+
 
 def is_regular_user(user):
     return user.groups.filter(name="RegularUsers").exists()

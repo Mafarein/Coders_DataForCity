@@ -1,26 +1,35 @@
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user, get_user_model
-from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+# from django.contrib.auth.decorators import login_required
+from django.db.models import Q, F
 import pandas as pd
 from .models import SportFacility, TimeSlot
 from .utils import make_plotly_map, is_regular_user
 from .forms import *
 
 
-@login_required
 def index(request):
     user = get_user(request)
-    if is_regular_user(user):
+    if is_regular_user(user) or user.is_anonymous:
         return redirect("search")
     else:
-        return redirect("user_facilities", user.pk)
+        return redirect("profile")
 
 
 # wyszukiwarka
 def search_facilities(request):
-    facilities = SportFacility.objects.filter(is_active = True)
+    search_form = FacilitySearchForm(request.GET)
+    hour = search_form.data.get('hour')
+    date = search_form.data.get('date')
+    ts = TimeSlot.objects.all()
+    if hour is not None:
+        ts = ts.filter(start__lte=hour, end__gte=hour)#.select_related("facility")
+    if date not in [None, ""]:
+        ts = ts.filter(date=date)
+    facilities = SportFacility.objects.filter(is_active = True, id__in=ts.values("facility_id"))
+    if search_form.data.get('type') is not None and search_form.data.get('type') != str(SportFacilityType.objects.get(type="-----").id):
+        facilities = facilities.filter(type=search_form.data['type'])
     f_data = [
         {
             "lat": f.latitude,
@@ -32,7 +41,7 @@ def search_facilities(request):
     ]
     # podajemy nazwy kolumn na wypadek, gdyby zbiór danych był pusty
     df = pd.DataFrame(f_data, columns=["lat", "long", "name", "owner", "type"])
-    return render(request, "main/search.html", {"plot": make_plotly_map(df)})
+    return render(request, "main/search.html", {"plot": make_plotly_map(df), "search_form": search_form, "facilities": facilities})
 
 
 # wszystkie obiekty sportowe danego użytkownika
@@ -87,6 +96,9 @@ def create_facility(request):
             return render(request, "main/facility_created.html")
         else:
             form = SportFacilityForm()
+            if user.groups.filter(name="Schools").exists():
+                sp = user.school_profile
+                form = SportFacilityForm({"street_name": sp.street_name, "building_number": sp.building_number})
             return render(request, "main/create_facility.html", {"form": form})
     else:
         return HttpResponseForbidden()
