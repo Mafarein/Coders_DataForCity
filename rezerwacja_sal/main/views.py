@@ -96,6 +96,9 @@ def create_facility(request):
             return render(request, "main/facility_created.html")
         else:
             form = SportFacilityForm()
+            if user.groups.filter(name="Schools").exists():
+                sp = user.school_profile
+                form = SportFacilityForm({"street_name": sp.street_name, "building_number": sp.building_number})
             return render(request, "main/create_facility.html", {"form": form})
     else:
         return HttpResponseForbidden()
