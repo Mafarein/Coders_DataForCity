@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user, get_user_model
-from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F
 import pandas as pd
 from .models import SportFacility, TimeSlot
@@ -30,9 +30,6 @@ def search_facilities(request):
     facilities = SportFacility.objects.filter(is_active = True, id__in=ts.values("facility_id"))
     if search_form.data['type'] != '----':
         facilities = facilities.filter(type=search_form.data['type'])
-    
-    # facilities.filter(Q(F('timeslots__start')))
-    # ts = TimeSlot.objects.filter()
     f_data = [
         {
             "lat": f.latitude,
@@ -44,7 +41,7 @@ def search_facilities(request):
     ]
     # podajemy nazwy kolumn na wypadek, gdyby zbiór danych był pusty
     df = pd.DataFrame(f_data, columns=["lat", "long", "name", "owner", "type"])
-    return render(request, "main/search.html", {"plot": make_plotly_map(df), "search_form": search_form})
+    return render(request, "main/search.html", {"plot": make_plotly_map(df), "search_form": search_form, "facilities": facilities})
 
 
 # wszystkie obiekty sportowe danego użytkownika

@@ -33,12 +33,12 @@ class RegularUserCreationForm(CustomUserCreationForm):
 # ale dodanie konkretnego obiektu, którego istnienie można sprawdzić już tak
 
 class SportFacilityOwnerCreationForm(CustomUserCreationForm):
-    name = forms.CharField(max_length=50, required=False, label="Imię")
-    surname = forms.CharField(max_length=50, required=False, label="Nazwisko")
+    first_name = forms.CharField(max_length=50, required=False, label="Imię")
+    last_name = forms.CharField(max_length=50, required=False, label="Nazwisko")
     
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2", "name", "surname")
+        fields = ("username", "email", "password1", "password2", "first_name", "last_name")
 
     def save(self, commit=True):
         user = super(SportFacilityOwnerCreationForm, self).save(commit=False)

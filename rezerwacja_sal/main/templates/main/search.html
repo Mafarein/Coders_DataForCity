@@ -15,5 +15,19 @@
     </form>
 </div>
 {{ plot }}
+<div id="results">
+    <table>
+        <tr><th>Obiekt</th><th>Typ</th><th>Właściciel</th></tr>
+        {% for obj in facilities %}
+        <tr>
+            <td><a href="{% url "facility_detail" obj.id %}">{{obj.name}}</a></td>
+            <td><ul>{% for type in obj.type.all %}<li>{{type}}</li>{% endfor %}</ul></td>
+            <td>
+                {{obj.owner}}{% if obj.owner.first_name and obj.owner.last_name %} ({{obj.owner.first_name}} {{obj.owner.last_name}}){% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endautoescape %}
 {% endblock content %}
