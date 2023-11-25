@@ -6,13 +6,15 @@ from django.contrib.auth.models import Group
 
 class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(max_length=50, required=True, label="Nazwa użytkownika")
+    first_name = forms.CharField(max_length=50, required=False, label="Imię")
+    last_name = forms.CharField(max_length=50, required=False, label="Nazwisko")
     email = forms.EmailField(required=True, label="Email")
     password1 = forms.CharField(max_length=50, min_length=8, required=True, widget=forms.PasswordInput, label="Hasło")
     password2 = forms.CharField(max_length=50, min_length=8, required=True, widget=forms.PasswordInput, label="Powtórz hasło")
 
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2")
+        fields = ("username", "first_name", "last_name", "email", "password1", "password2")
     
     def save(self, commit=False):
         user = super(CustomUserCreationForm, self).save(commit=False)
@@ -33,13 +35,6 @@ class RegularUserCreationForm(CustomUserCreationForm):
 # ale dodanie konkretnego obiektu, którego istnienie można sprawdzić już tak
 
 class SportFacilityOwnerCreationForm(CustomUserCreationForm):
-    first_name = forms.CharField(max_length=50, required=False, label="Imię")
-    last_name = forms.CharField(max_length=50, required=False, label="Nazwisko")
-    
-    class Meta:
-        model = User
-        fields = ("username", "email", "password1", "password2", "first_name", "last_name")
-
     def save(self, commit=True):
         user = super(SportFacilityOwnerCreationForm, self).save(commit=False)
         if commit:
@@ -51,17 +46,17 @@ class SportFacilityOwnerCreationForm(CustomUserCreationForm):
 class SchoolUserCreationForm(UserCreationForm):
     # tutaj username to nazwa szkoły
     school_name = forms.CharField(max_length=50, required=True, label="Nazwa szkoły")
+    username = forms.CharField(max_length=50, required=True, label="Nazwa użytkownika")
     email = forms.EmailField(required=True, label="Email")
     password1 = forms.CharField(max_length=50, min_length=8, required=True, widget=forms.PasswordInput, label="Hasło")
     password2 = forms.CharField(max_length=50, min_length=8, required=True, widget=forms.PasswordInput, label="Powtórz hasło")
 
     class Meta:
         model = User
-        fields = ("email", "password1", "password2")
+        fields = ("username", "email", "password1", "password2")
     
     def save(self, commit=True):
         user = super(SchoolUserCreationForm, self).save(commit=False)
-        user.username = self.cleaned_data['school_name'].replace(" ", "_")
         # TODO: utworzyć instancję SchoolProfile na podstawie danych z API
         if commit:
             user.save()
