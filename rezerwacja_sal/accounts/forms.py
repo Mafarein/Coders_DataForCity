@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+from .models import SchoolProfile
+from main.utils import school_address, get_lat_long_from_address
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -45,7 +47,7 @@ class SportFacilityOwnerCreationForm(CustomUserCreationForm):
 
 class SchoolUserCreationForm(UserCreationForm):
     # tutaj username to nazwa szkoły
-    school_name = forms.CharField(max_length=50, required=True, label="Nazwa szkoły")
+    school_name = forms.CharField(max_length=100, required=True, label="Nazwa szkoły")
     username = forms.CharField(max_length=50, required=True, label="Nazwa użytkownika")
     email = forms.EmailField(required=True, label="Email")
     password1 = forms.CharField(max_length=50, min_length=8, required=True, widget=forms.PasswordInput, label="Hasło")
@@ -57,13 +59,23 @@ class SchoolUserCreationForm(UserCreationForm):
     
     def save(self, commit=True):
         user = super(SchoolUserCreationForm, self).save(commit=False)
-        # TODO: utworzyć instancję SchoolProfile na podstawie danych z API
+        addr = school_address(self.cleaned_data['school_name'])
+        lat, long = get_lat_long_from_address(addr['street'], addr['building_number'])
+        sp = SchoolProfile(
+            user=user,
+            name=addr['school_name'],
+            street_name=addr['street'],
+            building_number=addr['building_number'],
+            lat=lat,
+            long=long)
         if commit:
             user.save()
+            sp.save()
             user.groups.add(Group.objects.get(name="Schools"))
         return user
     
     def is_valid(self) -> bool:
         v = super().is_valid()
-        # TODO: sprawdzić, że szkoła istnieje
-        return v
+        sa = school_address(self.cleaned_data['school_name'])
+        lat, long = get_lat_long_from_address(sa['street'], sa['building_number'])
+        return v and sa is not None and lat is not None
