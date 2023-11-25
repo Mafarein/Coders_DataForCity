@@ -14,7 +14,7 @@ def index(request):
     if is_regular_user(user) or user.is_anonymous:
         return redirect("search")
     else:
-        return redirect("user_facilities", user.pk)
+        return redirect("profile")
 
 
 # wyszukiwarka
@@ -25,10 +25,10 @@ def search_facilities(request):
     ts = TimeSlot.objects.all()
     if hour is not None:
         ts = ts.filter(start__lte=hour, end__gte=hour)#.select_related("facility")
-    if date is not None:
+    if date not in [None, ""]:
         ts = ts.filter(date=date)
     facilities = SportFacility.objects.filter(is_active = True, id__in=ts.values("facility_id"))
-    if search_form.data['type'] != '----':
+    if search_form.data.get('type') is not None and search_form.data.get('type') != str(SportFacilityType.objects.get(type="-----").id):
         facilities = facilities.filter(type=search_form.data['type'])
     f_data = [
         {
