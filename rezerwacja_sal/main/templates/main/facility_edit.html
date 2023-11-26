@@ -2,6 +2,7 @@
 
 {% block content %}
 <h1>{{facility.name}}</h1>
+<p>{{facility.street_name}} {{facility.building_number}}</p>
 <h2>Aktualne przedziały czasowe</h2>
 <table>
     <tr><th>Data</th><th>Początek</th><th>Koniec</th></tr>
@@ -17,4 +18,17 @@
         <tr><td colspan='2'><input type="submit" value="Utwórz"></td></tr>
     </table>
 </form>
+<h2>Rezerwacje</h2>
+<table>
+    <tr><th>użytkownik</th><th>data</th><th>godziny</th><th>Zaakceptowane</th><th></th></tr>
+    {% for res in reservations %}
+        <tr>
+            <td>{{res.renting_user.username}}</td>
+            <td>{{res.date}}</td>
+            <td>{{res.start}}-{{res.end}}</td>
+            <td>{% if res.accepted %}TAK{% else %}NIE{% endif %}</td>
+            <td><a href="{% url "accept_reservation" facility.id res.id %}">{% if res.accepted %}Odrzuć{% else %}Zaakceptuj{% endif %}</a></td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
@@ -7,6 +7,7 @@ from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from .forms import *
 from .tokens import account_activation_token
 
@@ -64,4 +65,7 @@ def registration_choice(request):
 
 @login_required
 def profile(request):
+    usr = get_user(request)
+    if usr.groups.filter(Q(name="SportFacilityOwners") | Q(name="Schools")).exists():
+        return redirect("user_facilities", uid=usr.id)
     return render(request, "accounts/profile.html", {"user": get_user(request)})
