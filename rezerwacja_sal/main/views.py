@@ -59,8 +59,8 @@ def make_reservation(request, user, facility, timeslots):
             return render(request, "main/reservation_made.html")
     else:
         reservation_form = ReservationForm()
-        context = {"facility": facility, "timeslots": timeslots, "reservation_form": reservation_form}
-        return render(request, "main/make_reservation.html", context)
+    context = {"facility": facility, "timeslots": timeslots, "reservation_form": reservation_form}
+    return render(request, "main/make_reservation.html", context)
     
 
 def facility_edit(request, facility, timeslots):
@@ -69,7 +69,9 @@ def facility_edit(request, facility, timeslots):
         if timeslot_form.is_valid():
             timeslot_form.save(facility)
     timeslot_form = TimeSlotForm()
-    return render(request, "main/facility_edit.html", {"facility": facility, "timeslots": timeslots, "timeslot_form": timeslot_form})
+    reservations = Reservation.objects.filter(facility=facility)
+    context = {"facility": facility, "timeslots": timeslots, "timeslot_form": timeslot_form, "reservations": reservations}
+    return render(request, "main/facility_edit.html", context)
 
 
 def facility_detail(request, fid):
@@ -83,6 +85,29 @@ def facility_detail(request, fid):
     if facility.owner == user:
         return facility_edit(request, facility, timeslots)
     return render(request, "main/facility_detail.html", {"facility": facility, "timeslots": timeslots})
+
+
+def accept_reservation(request, fid, rid):
+    facility = get_object_or_404(SportFacility, pk=fid)
+    user = get_user(request)
+    if user != facility.owner:
+        return HttpResponseForbidden()
+    if not facility.is_active:
+        raise Http404()
+    reservation = get_object_or_404(Reservation, pk=rid)
+    reservation.accepted = not reservation.accepted
+    clashing = Reservation.objects.filter(
+            (Q(start__lt=reservation.end) & Q(start__gte=reservation.start)) | (Q(end__gt=reservation.start) & Q(end__lte=reservation.end)),
+            date=reservation.date,
+            facility=facility,
+            accepted=True
+        ).exists()
+    if reservation.accepted and clashing:
+        # ??? powiadomienie o błędzie
+        pass
+    else:
+        reservation.save()
+    return redirect("facility_detail", fid=fid)
 
 
 def create_facility(request):
