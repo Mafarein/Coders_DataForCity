@@ -7,4 +7,5 @@ urlpatterns = [
     path('usr/<int:uid>/', get_facilities, name="user_facilities"),
     path('obj/create/', create_facility, name="facility_create"),
     path('obj/<int:fid>/', facility_detail, name="facility_detail"),
+    path('obj/<int:fid>/edit/', facility_edit, name='facility_edit'),
 ]

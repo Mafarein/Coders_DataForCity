@@ -1,11 +1,14 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block scripts %}
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 {% endblock scripts %}
 
 {% block content %}
 {% autoescape off %}
+<div class="search">
 <div id="search">
     <form action="" method="get">
         <table>
@@ -14,7 +17,9 @@
         </table>
     </form>
 </div>
+<div class="plot"> 
 {{ plot }}
+</div>
 <div id="results">
     <table>
         <tr><th>Obiekt</th><th>Typ</th><th>Właściciel</th></tr>
@@ -28,6 +33,7 @@
         </tr>
         {% endfor %}
     </table>
+</div>
 </div>
 {% endautoescape %}
 {% endblock content %}

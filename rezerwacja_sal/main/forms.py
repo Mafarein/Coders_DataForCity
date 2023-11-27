@@ -102,6 +102,7 @@ class TimeSlotForm(forms.ModelForm):
     date = forms.DateField(widget=DateInput, label="Data", required=True)
     start = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), label="Początek", required=True)
     end = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), label="Koniec", required=True)
+    #accepted = forms.BooleanField(label="Akceptowana", required=False)
 
     class Meta:
         model = TimeSlot

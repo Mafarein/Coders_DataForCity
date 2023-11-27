@@ -63,12 +63,17 @@ def make_reservation(request, user, facility, timeslots):
         return render(request, "main/make_reservation.html", context)
     
 
-def facility_edit(request, facility, timeslots):
+def facility_edit(request, fid):
+    facility = get_object_or_404(SportFacility, pk=fid)
+    timeslots = TimeSlot.objects.filter(facility_id=facility)
+
     if request.method == "POST":
         timeslot_form = TimeSlotForm(request.POST)
         if timeslot_form.is_valid():
             timeslot_form.save(facility)
-    timeslot_form = TimeSlotForm()
+    else:
+        timeslot_form = TimeSlotForm()
+
     return render(request, "main/facility_edit.html", {"facility": facility, "timeslots": timeslots, "timeslot_form": timeslot_form})
 
 
@@ -102,3 +107,7 @@ def create_facility(request):
             return render(request, "main/create_facility.html", {"form": form})
     else:
         return HttpResponseForbidden()
+
+
+
+

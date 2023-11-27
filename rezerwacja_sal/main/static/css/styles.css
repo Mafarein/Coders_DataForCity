@@ -34,3 +34,109 @@ form {
     font-family: 'Didot' serif;
     font-size: 23px;
 }
+#results table {
+    border-collapse: collapse;
+    width: 100%; /* Zwiększ szerokość do 80% */
+    margin-top: 20px;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#results th, #results td {
+    border: 1px solid rgb(3, 104, 71);
+    text-align: left;
+    padding: 12px;
+}
+
+#results th {
+    background-color: rgba(145, 46, 15, 0.8)
+}
+
+#results tr {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+#search form table {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-spacing: 0;
+    width: 70%;
+    border-collapse: separate;
+    border: 1px solid #dddddd; 
+    padding: 12px;
+    border-color: rgb(3, 104, 71);
+}
+
+
+#search form tr {
+    padding: 8px;
+    border-right: 1px solid #dddddd; 
+    text-align: center;
+}
+
+#search form td:last-child {
+    border-right: none; 
+}
+
+#search form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+#search form input[type="submit"] {
+    padding: 5px 40px;
+    font-size: 12px;
+}
+
+
+
+
+.plot {
+    padding-left: 400px;
+    padding-right: 400px;
+}
+
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    max-width: 35%;
+    margin: 0 auto;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-color: rgb(3, 104, 71);
+}
+
+.detail table {
+    width: 60%;
+}
+
+.detail input[type="submit"] {
+    margin-top: 10px;
+    margin: auto; 
+    padding: 5px 35px; 
+    font-size: 13px; 
+    display: block; 
+}
+
+.facility_name{
+    text-align: center; 
+    margin-top: 20px;
+}
+
+
+
+.centered-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
