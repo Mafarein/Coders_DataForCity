@@ -6,4 +6,10 @@
 
 .vscode/
 app-messages/
+
+djangoenv
+*.pyc
+*.pyo
+__pycache__/
+
 rezerwacja_sal/db.sqlite3
