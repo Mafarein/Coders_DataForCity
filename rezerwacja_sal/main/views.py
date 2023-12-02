@@ -118,7 +118,7 @@ def create_facility(request):
             if form.is_valid():
                 facility = form.save(user)
             # TODO: powiadom admina o próbie utworzenia obiektu
-            return render(request, "main/facility_created.html")
+            return render(request, "main/facility_created.html", {"owner": user})
         else:
             form = SportFacilityForm()
             if user.groups.filter(name="Schools").exists():

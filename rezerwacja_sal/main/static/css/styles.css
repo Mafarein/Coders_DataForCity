@@ -58,7 +58,7 @@ img.logo{
     padding: 10px;
 }
 
-.facility_edit{
+.facility{
     display: flex;
 }
 
@@ -79,6 +79,10 @@ img.logo{
 .table2 td {
     text-align: center;
     padding: 10px;
+}
+
+.tablecenter {
+    text-align: center;
 }
 
 form {

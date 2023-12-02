@@ -2,4 +2,7 @@
 
 {% block page-content %}
     <p>Obiekt został utworzony w bazie danych. Stanie się widoczny po zatwierdzeniu przez administrację.</p>
+    <a href="{% url 'user_facilities' owner.pk %}">Powrót do profilu</a>
+
+
 {% endblock %}

@@ -1,6 +1,24 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h2>{{facility.name}}</h2>
+<div class="facility">
+    <div class="block1">
+        <h2>Nazwa obiektu: {{facility.name}}</h2>
+        <p>Adres: {{facility.street_name}} {{facility.building_number}}</p>
+        {{facility.description}}
+        <h2>Dodane przez właściciela przedziały czasowe</h2>
+        <table> 
+            <tr><th>Data</th><th>Początek</th><th>Koniec</th></tr>
+            {% for slot in timeslots %}
+            <tr><td>{{slot.date}}</td><td>{{slot.start}}</td><td>{{slot.end}}</td></tr>
+            {% endfor %}
+        </table>
+        
+    </div>
+    <div class="block1">
+        {% block page-content %}
+        {% endblock %}
+    </div>
+</div>
 
 {% endblock content %}
