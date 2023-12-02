@@ -30,7 +30,7 @@ def get_lat_long_from_address(street_name, building_number):
 def school_address(school_name):
     school_name = school_name.upper()
     url = "https://api.um.warszawa.pl/api/action/datastore_search?"
-    q = {"resource_id":"1cae4865-bb17-4944-a222-0d0cdc377951", "filters":'{"Nazwa placówki": "'+school_name+'"}'}
+    q = {"resource_id":"1cae4865-bb17-4944-a222-0d0cdc377951", "q":school_name}
     response = requests.get(url, q)
     if response.status_code != 200:
         return None

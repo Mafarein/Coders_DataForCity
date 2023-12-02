@@ -76,6 +76,10 @@ class SchoolUserCreationForm(UserCreationForm):
     
     def is_valid(self) -> bool:
         v = super().is_valid()
+        if not v:
+            return False
         sa = school_address(self.cleaned_data['school_name'])
+        if sa is None:
+            return False
         lat, long = get_lat_long_from_address(sa['street'], sa['building_number'])
-        return v and sa is not None and lat is not None
+        return lat is not None

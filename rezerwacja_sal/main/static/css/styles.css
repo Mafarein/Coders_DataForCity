@@ -16,6 +16,28 @@ header{
     margin-bottom: 20px;
 }
 
+.header-right{
+    text-align: right;
+    position: absolute;
+    right: 1em;
+}
+
+.header-right h2, .header-right p {
+    display: inline;
+}
+
+.header-right p{
+    margin-right: 10px;
+}
+
+.header-right h2{
+    font-family: 'Didot' serif;
+    font-size: 23px;
+    color: rgb(64, 68, 68); 
+    margin-right: 30px;
+}
+
+
 img.logo{
     align-items: center;
     margin-bottom: 20px;
@@ -36,11 +58,34 @@ img.logo{
     padding: 10px;
 }
 
+.facility_edit{
+    display: flex;
+}
+
+.block1{
+    width: 48%; 
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.block1 table{
+    border-spacing: 10px; 
+    border-collapse: separate; 
+}
+.table2 {
+    display: inline-block;
+    border-collapse: collapse;
+}
+.table2 td {
+    text-align: center;
+    padding: 10px;
+}
+
 form {
     display: inline-block;
 }
 
-.login-center .p1{
+.p1{
     margin-top: -5px;
     color: rgb(64, 68, 68);
     font-family: 'Didot' serif;
@@ -48,7 +93,7 @@ form {
 }
 
 
-input[type="submit"]{
+input[type="submit"], button{
     text-align: center;
     font-size: 14px;
     border-radius: 5px;
@@ -58,22 +103,7 @@ input[type="submit"]{
     border: 2px solid rgb(64, 68, 68);
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover, button:hover  {
     background-color: rgb(64, 68, 68); 
     color: white;
-  }
-
-button {
-    text-align: center;
-    font-size: 14px;
-    border-radius: 5px;
-    margin-top: 10px;
-    background-color: white;
-    color: rgb(64, 68, 68);
-    border: 2px solid rgb(64, 68, 68);
-  }
-
-button:hover {
-    background-color: rgb(64, 68, 68); 
-    color: white;    
 }
