@@ -22,7 +22,7 @@ class SportFacility(models.Model):
     longitude = models.FloatField()
     street_name = models.CharField("nazwa ulicy", max_length=100)
     building_number = models.PositiveIntegerField("numer budynku")
-    # description = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     # is_active - czy obiekt został zatwierdzony przez administrację?
     is_active = models.BooleanField(default=False)
 

@@ -13,12 +13,13 @@ NULL_CHOICE = (None, "-----")
 class SportFacilityForm(forms.ModelForm):
     class Meta:
         model = SportFacility
-        fields = ("name", "type", "street_name","building_number")
+        fields = ("name", "type", "street_name","building_number", "description")
         labels = {
             "name": "Nazwa",
             "type": "Typ",
             "street_name": "Nazwa ulicy",
-            "building_number": "Numer budynku"
+            "building_number": "Numer budynku",
+            "description": "Opis"
         }
 
     def save(self, user, commit = True) -> Any:
