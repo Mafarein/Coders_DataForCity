@@ -2,6 +2,7 @@ from plotly.offline import plot
 import plotly.express as px
 import plotly.graph_objects as go
 import requests
+from .models import SportFacilityType
 
 
 def make_plotly_map(df):
@@ -49,3 +50,7 @@ def school_address(school_name):
 
 def is_regular_user(user):
     return user.groups.filter(name="RegularUsers").exists()
+
+
+def get_all_facility_types():
+    return list(SportFacilityType.objects.all().values_list())

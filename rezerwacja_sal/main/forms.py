@@ -1,9 +1,13 @@
 from typing import Any
 from django import forms
 from django.db.models import Q
-from .models import SportFacility, Reservation, TimeSlot, SportFacilityType
-from .utils import get_lat_long_from_address
+from .models import SportFacility, Reservation, TimeSlot
+from .utils import get_lat_long_from_address, get_all_facility_types
 import datetime as dt
+
+
+HOUR_CHOICES = [(dt.time(hour=h, minute=m), f'{h:02d}:{m:02d}') for h in range(0, 24) for m in (0, 30)]
+NULL_CHOICE = (None, "-----")
 
 
 class SportFacilityForm(forms.ModelForm):
@@ -30,9 +34,6 @@ class SportFacilityForm(forms.ModelForm):
         if commit:
             fac.save()
         return fac
-
-
-HOUR_CHOICES = [(dt.time(hour=h, minute=m), f'{h:02d}:{m:02d}') for h in range(0, 24) for m in (0, 30)]
 
 
 class DateInput(forms.DateInput):
@@ -77,7 +78,8 @@ class ReservationForm(forms.ModelForm):
         return reservation
 
     def is_valid(self, facility) -> bool:
-        v = super().is_valid()
+        if not super().is_valid():
+            return False
         # 1. timeslot exists
         end = self.get_end_time()
         if end is None:
@@ -95,7 +97,7 @@ class ReservationForm(forms.ModelForm):
             facility=facility,
             accepted=True
         ).exists()
-        return v and ts and not clashing
+        return ts and not clashing
 
 
 class TimeSlotForm(forms.ModelForm):
@@ -119,6 +121,6 @@ class TimeSlotForm(forms.ModelForm):
 
 
 class FacilitySearchForm(forms.Form):
-    type = forms.ChoiceField(choices=SportFacilityType.objects.all().values_list, initial="-----", label="Typ", required=False, show_hidden_initial=True)
+    type = forms.ChoiceField(choices=[NULL_CHOICE]+get_all_facility_types(), initial=NULL_CHOICE[1], label="Typ", required=False)
     date = forms.DateField(widget=DateInput, label="Data", required=False)
-    hour = forms.ChoiceField(choices=HOUR_CHOICES, label="Godzina", required=False)
+    hour = forms.ChoiceField(choices=[NULL_CHOICE]+HOUR_CHOICES, initial=NULL_CHOICE[1], label="Godzina", required=False)
