@@ -23,12 +23,12 @@ def search_facilities(request):
     hour = search_form.data.get('hour')
     date = search_form.data.get('date')
     ts = TimeSlot.objects.all()
-    if hour is not None:
-        ts = ts.filter(start__lte=hour, end__gte=hour)#.select_related("facility")
+    if hour not in [None, ""]:
+        ts = ts.filter(start__lte=hour, end__gte=hour)
     if date not in [None, ""]:
         ts = ts.filter(date=date)
     facilities = SportFacility.objects.filter(is_active = True, id__in=ts.values("facility_id"))
-    if search_form.data.get('type') is not None and search_form.data.get('type') != str(SportFacilityType.objects.get(type="-----").id):
+    if search_form.data.get('type') not in [None, ""]:
         facilities = facilities.filter(type=search_form.data['type'])
     f_data = [
         {

@@ -6,12 +6,10 @@
 
 .vscode/
 app-messages/
-<<<<<<< HEAD
 
 djangoenv
 *.pyc
 *.pyo
 __pycache__/
-=======
+
 rezerwacja_sal/db.sqlite3
->>>>>>> c3116702d91dfb42ae68c032de4d8d6b99383e87
