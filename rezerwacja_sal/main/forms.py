@@ -122,6 +122,6 @@ class TimeSlotForm(forms.ModelForm):
 
 
 class FacilitySearchForm(forms.Form):
-    type = forms.ChoiceField(choices=[NULL_CHOICE]+get_all_facility_types(), initial=NULL_CHOICE[1], label="Typ", required=False)
+    type = forms.ChoiceField(choices=lambda: [NULL_CHOICE]+get_all_facility_types(), initial=NULL_CHOICE[1], label="Typ", required=False)
     date = forms.DateField(widget=DateInput, label="Data", required=False)
     hour = forms.ChoiceField(choices=[NULL_CHOICE]+HOUR_CHOICES, initial=NULL_CHOICE[1], label="Godzina", required=False)
