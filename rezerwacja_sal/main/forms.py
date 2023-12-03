@@ -48,7 +48,7 @@ class DateInput(forms.DateInput):
 class ReservationForm(forms.ModelForm):
     date = forms.DateField(widget=DateInput, required=True)
     start = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), required=True)
-    duration = forms.DurationField(widget=forms.Select(choices=HOUR_CHOICES), label="Czas trwania", required=True)
+    duration = forms.DurationField(widget=forms.Select(choices=HOUR_CHOICES), label="Czas trwania", required=True, help_text="Proszę zwróć uwagę że jest to czas trwania, a nie godzina zakończenia")
     field_order = ["date", "start", "duration", "motivation"]
 
     class Meta:

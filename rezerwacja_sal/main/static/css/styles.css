@@ -111,3 +111,9 @@ input[type="submit"]:hover, button:hover  {
     background-color: rgb(64, 68, 68); 
     color: white;
 }
+
+a {
+    color: rgb(42, 124, 189);
+    text-decoration: none;
+  }
+  

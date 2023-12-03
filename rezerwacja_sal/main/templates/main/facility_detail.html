@@ -10,7 +10,19 @@
         <table> 
             <tr><th>Data</th><th>Początek</th><th>Koniec</th></tr>
             {% for slot in timeslots %}
-            <tr><td>{{slot.date}}</td><td>{{slot.start}}</td><td>{{slot.end}}</td></tr>
+            <tr><td>{{ slot.date|date:"d.m.Y" }}</td><td>{{ slot.start|date:"H:i" }}</td><td>{{ slot.end|date:"H:i" }}</td></tr>
+            {% endfor %}
+        </table>
+
+        <h2>Zaakceptowane rezerwacje</h2>
+        <table>
+            <tr><th>Użytkownik</th><th>Data</th><th>Godziny</th></tr>
+            {% for res in reservations %}
+                <tr>
+                    <td>{{ res.renting_user.username }}</td>
+                    <td>{{ res.date|date:"d.m.Y" }}</td>
+                    <td>{{ res.start|date:"H:i" }}-{{ res.end|date:"H:i" }}</td>
+                </tr>
             {% endfor %}
         </table>
         
