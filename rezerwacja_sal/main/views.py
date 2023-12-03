@@ -51,7 +51,9 @@ def get_facilities(request, uid):
     return render(request, "main/user_facilities.html", {"owner": owner, "facilities": facilities})
 
 
-def make_reservation(request, user, facility, timeslots):
+
+
+def make_reservation(request, user, facility, timeslots, reservations=None):  # Dodaj parametr 'reservations'
     if request.method == "POST":
         reservation_form = ReservationForm(request.POST)
         if reservation_form.is_valid(facility):
@@ -59,9 +61,9 @@ def make_reservation(request, user, facility, timeslots):
             return render(request, "main/reservation_made.html")
     else:
         reservation_form = ReservationForm()
-    context = {"facility": facility, "timeslots": timeslots, "reservation_form": reservation_form}
+    context = {"facility": facility, "timeslots": timeslots, "reservation_form": reservation_form, "reservations": reservations}  # Dodaj 'reservations' do kontekstu
     return render(request, "main/make_reservation.html", context)
-    
+
 
 def facility_edit(request, facility, timeslots):
     if request.method == "POST":
@@ -80,11 +82,13 @@ def facility_detail(request, fid):
         raise Http404()
     timeslots = TimeSlot.objects.filter(facility_id=facility)
     user = get_user(request)
+    reservations = Reservation.objects.filter(facility=facility, accepted=True)  # Dodaj filtrację dla zaakceptowanych rezerwacji
     if is_regular_user(user):
-        return make_reservation(request, user, facility, timeslots)
+        return make_reservation(request, user, facility, timeslots, reservations=reservations)
     if facility.owner == user:
         return facility_edit(request, facility, timeslots)
-    return render(request, "main/facility_detail.html", {"facility": facility, "timeslots": timeslots})
+    return render(request, "main/facility_detail.html", {"facility": facility, "timeslots": timeslots, "reservations": reservations})
+
 
 
 def accept_reservation(request, fid, rid):

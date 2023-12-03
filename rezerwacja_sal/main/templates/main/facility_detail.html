@@ -16,16 +16,22 @@
 
         <h2>Zaakceptowane rezerwacje</h2>
         <table>
-            <tr><th>Użytkownik</th><th>Data</th><th>Godziny</th></tr>
+            <tr><th>Data</th><th>Godziny</th></tr>
             {% for res in reservations %}
                 <tr>
-                    <td>{{ res.renting_user.username }}</td>
                     <td>{{ res.date|date:"d.m.Y" }}</td>
                     <td>{{ res.start|date:"H:i" }}-{{ res.end|date:"H:i" }}</td>
                 </tr>
             {% endfor %}
         </table>
+
+        {% if is_regular_user %}
+        {% with reservations=reservations %}
+            {% include "main/make_reservation.html" %}
+        {% endwith %}
+        {% endif %}
         
+
     </div>
     <div class="block1">
         {% block page-content %}
