@@ -15,5 +15,5 @@
     </tr>
     {% endfor %}
 </table>
-<p><a href="{% url 'facility_create' %}">Dodaj nowy obiekt sportowy</a></p>
+{% if user.pk == owner.pk %}<p><a href="{% url 'facility_create' %}">Dodaj nowy obiekt sportowy</a></p>{% endif %}
 {% endblock page-content %}
