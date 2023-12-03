@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .forms import *
 from .tokens import account_activation_token
+from main.models import Reservation
 
 
 def account_creation_form(request, form_class):
@@ -68,4 +69,6 @@ def profile(request):
     usr = get_user(request)
     if usr.groups.filter(Q(name="SportFacilityOwners") | Q(name="Schools")).exists():
         return redirect("user_facilities", uid=usr.id)
-    return render(request, "accounts/profile.html", {"user": get_user(request)})
+    else:
+        reservations = Reservation.objects.filter(renting_user=usr).order_by('-date')
+    return render(request, "accounts/profile.html", {"user": get_user(request), "reservations": reservations})

@@ -1,6 +1,6 @@
-{% extends "base_generic.html" %}
+{% extends "main/facility_detail.html" %}
 
-{% block content %}
+{% block page-content %}
 <h1>{{facility.name}}</h1>
 <form method="POST">
     {% csrf_token %}

@@ -21,6 +21,9 @@ class SportFacilityForm(forms.ModelForm):
             "building_number": "Numer budynku",
             "description": "Opis"
         }
+        help_texts = {
+            "type": "Wciśnij CTRL, aby wybrać kilka opcji."
+        }
 
     def save(self, user, commit = True) -> Any:
         fac = super().save(False)
@@ -47,19 +50,20 @@ class DateInput(forms.DateInput):
 
 class ReservationForm(forms.ModelForm):
     date = forms.DateField(widget=DateInput, required=True)
-    start = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), required=True)
-    duration = forms.DurationField(widget=forms.Select(choices=HOUR_CHOICES), label="Czas trwania", required=True)
+    start = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES), required=True, label="Rozpoczęcie")
+    duration = forms.DurationField(widget=forms.Select(choices=HOUR_CHOICES), label="Czas trwania", required=True, help_text="Proszę zwróć uwagę że jest to czas trwania, a nie godzina zakończenia")
     field_order = ["date", "start", "duration", "motivation"]
 
     class Meta:
         model = Reservation
         fields = ("date", "start", "motivation")
-        labels = {
-            "date": "Data",
-            "start": "Rozpoczęcie",
-            "motivation": "Motywacja",
-        }
-        help_texts = {"motivation": "Opcjonalne szczegóły dotyczące celu, w jakim chcesz zarezerwować obiekt."}
+        labels = {"motivation": "Motywacja"}
+        help_texts = {
+            "duration": "Uwaga: z przyczyn technicznych rezerwacja zostanie odrzucona, "
+                "jeżeli skończy się po północy następnego dnia. Aby zarezerwować obiekt na noc, "
+                "należy utworzyć dwie rezerwacje: jedną trwającą do północy, a drugą rozpoczynającą się o północy.",
+            "motivation": "Opcjonalne szczegóły dotyczące celu, w jakim chcesz zarezerwować obiekt."
+            }
 
     def get_end_time(self):
         start_dt = dt.datetime.combine(self.cleaned_data['date'], self.cleaned_data['start'])
