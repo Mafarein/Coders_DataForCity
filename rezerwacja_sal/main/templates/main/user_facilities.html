@@ -3,12 +3,13 @@
 {% block content %}
 <p>Obiekty sportowe użytkownika {{owner}}:</p>
 <table>
-    <tr><th>Nazwa</th><th>Typ</th><th>Adres</th></tr>
+    <tr><th>Nazwa</th><th>Typ</th><th>Adres</th>{% if user.pk == owner.pk %}<th>Zaakceptowane</th>{% endif %}</tr>
     {% for fac in facilities %}
     <tr>
             <td><a href="{% url "facility_detail" fac.pk %}">{{fac.name}}</a></td>
             <td><ul>{% for t in fac.type.all %}<li>{{t.type}}</li>{% endfor %}</ul></td>
             <td>{{fac.street_name}} {{fac.building_number}}</td>
+            {% if user.pk == owner.pk %}<td>{% if fac.is_active %}TAK{% else %}NIE{% endif %}</td>{% endif %}
     </tr>
     {% endfor %}
 </table>

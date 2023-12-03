@@ -47,7 +47,9 @@ def search_facilities(request):
 # wszystkie obiekty sportowe danego użytkownika
 def get_facilities(request, uid):
     owner = get_object_or_404(get_user_model(), pk=uid)
-    facilities = SportFacility.objects.filter(owner_id=uid, is_active=True)
+    facilities = SportFacility.objects.filter(owner_id=uid)
+    if uid != get_user(request).pk:
+        facilities = facilities.filter(is_active=True)
     return render(request, "main/user_facilities.html", {"owner": owner, "facilities": facilities})
 
 
