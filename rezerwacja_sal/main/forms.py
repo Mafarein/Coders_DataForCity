@@ -21,6 +21,9 @@ class SportFacilityForm(forms.ModelForm):
             "building_number": "Numer budynku",
             "description": "Opis"
         }
+        help_texts = {
+            "type": "Wciśnij CTRL, aby wybrać kilka opcji."
+        }
 
     def save(self, user, commit = True) -> Any:
         fac = super().save(False)
