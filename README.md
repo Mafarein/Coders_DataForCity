@@ -10,7 +10,7 @@ Termin jest dostępny dopóki użytkownik-właściciel nie zaznaczy inaczej (w t
 W opisie sali znajduje się: 
 adres,=
 informacja dla których dyscyplin sportu sala jest przeznaczona/dostosowana,
-a także dłuższy opis który może być umieszczony przez użytkownika-właściciela w którym przedstawia dodatkowe informacje odnośnie sali (np. zasadach które muszą być przestrzegane przez wynajmujących, kosztach wynajęcia, możliwości bezpośredniego kontaktu np. nuumer telefonu).
+a także dłuższy opis który może być umieszczony przez użytkownika-właściciela w którym przedstawia dodatkowe informacje odnośnie sali (np. zasadach które muszą być przestrzegane przez wynajmujących, kosztach wynajęcia, możliwości bezpośredniego kontaktu np. numer telefonu).
 
 Dla użytkownika-wynajmującego dostępna jest mapa z zaznaczonymi obiektami oraz możliwością filtrowania sal względem kategorii dyscypliny sportowej do której szukają sali oraz filtrowania względem dostępności w wybranym przez nich terminie (data albo data z przedziałem czasowym). 
 Ten użytkownik po znalezieniu sali otwiera informację dotyczące danej sali wraz z jej opisem i kalendarzem dostępności. 
