@@ -13,3 +13,5 @@ djangoenv
 __pycache__/
 
 rezerwacja_sal/db.sqlite3
+
+.env
