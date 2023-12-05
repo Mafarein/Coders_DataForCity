@@ -12,7 +12,19 @@
 </head>
 <body>
     <div class="top-login">
+        <img class="logo" src="{% static 'img/logo.png' %}" alt="logo">
         <header>Rezerwacja obiektów sportowych Warszawa</header>
+
+    <div class="header-right">
+        {% if user.is_anonymous %}
+        <p><a href='{% url "login" %}'>Zaloguj się</a></p>
+        {% else %}
+        <h2>{{user.username}}</h2>
+        <p><a href="{% url 'password_reset' %}">Zmień hasło</a></p>
+        <p><a href='{%  url "logout" %}'>Wyloguj się</a></p>
+        {% endif %}
+    </div>
+
     </div> 
     <main>
         {% block content %}

@@ -1,17 +1,19 @@
-{% extends "base_generic.html" %}
+{% extends "base_accounts.html" %}
 
-{% block content %}
-<p>Obiekty sportowe użytkownika {{owner}}:</p>
-<table>
-    <tr><th>Nazwa</th><th>Typ</th><th>Adres</th></tr>
+
+
+{% block page-content %}
+<p class="p1">Obiekty sportowe użytkownika {{owner}}:</p>
+<table class="table2" class="tablecenter">
+    <tr><th>Nazwa</th><th>Typ</th><th>Adres</th>{% if user.pk == owner.pk %}<th>Zaakceptowane</th>{% endif %}</tr>
     {% for fac in facilities %}
     <tr>
-        <a href="{% url "facility_detail" fac.pk %}">
-            <td>{{fac.name}}</td>
-            <td>{{fac.type}}</td>
+            <td><a href="{% url 'facility_detail' fac.pk %}">{{fac.name}}</a></td>
+            <td><ul>{% for t in fac.type.all %}<li>{{t.type}}</li>{% endfor %}</ul></td>
             <td>{{fac.street_name}} {{fac.building_number}}</td>
-        </a>
+            {% if user.pk == owner.pk %}<td>{% if fac.is_active %}TAK{% else %}NIE{% endif %}</td>{% endif %}
     </tr>
     {% endfor %}
 </table>
-{% endblock content %}
+{% if user.pk == owner.pk %}<p><a href="{% url 'facility_create' %}">Dodaj nowy obiekt sportowy</a></p>{% endif %}
+{% endblock page-content %}

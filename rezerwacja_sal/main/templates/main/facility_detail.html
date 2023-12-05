@@ -1,6 +1,42 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h2>{% if facility.name %}{{facility.name}}{% else %}facility.type{% endif %}</h2>
+<div class="facility">
+    <div class="block1">
+        <h2>Nazwa obiektu: {{facility.name}}</h2>
+        <p>Adres: {{facility.street_name}} {{facility.building_number}}</p>
+        {{facility.description}}
+        <h2>Dodane przez właściciela przedziały czasowe</h2>
+        <table> 
+            <tr><th>Data</th><th>Początek</th><th>Koniec</th></tr>
+            {% for slot in timeslots %}
+            <tr><td>{{ slot.date|date:"d.m.Y" }}</td><td>{{ slot.start|date:"H:i" }}</td><td>{{ slot.end|date:"H:i" }}</td></tr>
+            {% endfor %}
+        </table>
+
+        <h2>Zaakceptowane rezerwacje</h2>
+        <table>
+            <tr><th>Data</th><th>Godziny</th></tr>
+            {% for res in reservations %}
+                <tr>
+                    <td>{{ res.date|date:"d.m.Y" }}</td>
+                    <td>{{ res.start|date:"H:i" }}-{{ res.end|date:"H:i" }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% if is_regular_user %}
+        {% with reservations=reservations %}
+            {% include "main/make_reservation.html" %}
+        {% endwith %}
+        {% endif %}
+        
+
+    </div>
+    <div class="block1">
+        {% block page-content %}
+        {% endblock %}
+    </div>
+</div>
 
 {% endblock content %}
