@@ -1,6 +1,4 @@
-# Projekt Interdyscyplinarny
-
-## System rezerwacji sal
+# System rezerwacji sal - Warszawa
 
 
 Dokument w którym przedstawimy działanie naszej aplikacji internetowej napisanej w Django na Hackaton Data for City 2023.
