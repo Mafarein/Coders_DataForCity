@@ -1,4 +1,3 @@
-t# Projekt Interdyscyplinarny
 
 ## System rezerwacji sal sportowych Warszawa
 
